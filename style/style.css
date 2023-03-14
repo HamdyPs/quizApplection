@@ -16,17 +16,39 @@ body {
   line-height: 1.6;
 }
 
+.btn {
+  display: block;
+  padding: 10px 15px;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 7px;
+  cursor: pointer;
+  background: var(--primary-color);
+}
+
 /* Quiz Style */
+.title-div {
+  color: var(--primary-color);
+  text-align: center;
+  font-size: 30px;
+}
+
+.select-div{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  gap: 20px;
+}
+
 .container {
   max-width: 90%;
   margin: auto;
   padding: 0 15px;
 }
-.container .title-div {
-  color: var(--primary-color);
-  text-align: center;
-  font-size: 30px;
-}
+
 .container .category-Qcount-div {
   padding-block: 20px;
   display: flex;
@@ -60,16 +82,8 @@ body {
   border-radius: 7px;
   transform: translateX(25px);
 }
+
 .container #submit {
-  display: block;
-  padding: 10px 15px;
-  border: none;
-  color: #fff;
-  font-weight: bold;
-  font-size: 15px;
-  border-radius: 7px;
-  cursor: pointer;
   margin: 35px auto 0;
-  background: var(--primary-color);
 }
 
