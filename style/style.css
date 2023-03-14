@@ -1,0 +1,75 @@
+/* Variables */
+:root {
+  --primary-color: #0075ff;
+}
+
+/* Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main Style */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+}
+
+/* Quiz Style */
+.container {
+  max-width: 90%;
+  margin: auto;
+  padding: 0 15px;
+}
+.container .title-div {
+  color: var(--primary-color);
+  text-align: center;
+  font-size: 30px;
+}
+.container .category-Qcount-div {
+  padding-block: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.container .category-Qcount-div p {
+  font-weight: bold;
+}
+.container .category-Qcount-div p span {
+  color: var(--primary-color);
+}
+.container .questions-div {
+  color: #333;
+}
+.container .answers-div {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 15px 0;
+}
+.container .answers-div .answer {
+  cursor: pointer;
+  padding: 10px 15px;
+  width: fit-content;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+.container .answers-div .answer.checked {
+  background: green;
+  color: #fff;
+  border-radius: 7px;
+  transform: translateX(25px);
+}
+.container #submit {
+  display: block;
+  padding: 10px 15px;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 15px;
+  border-radius: 7px;
+  cursor: pointer;
+  margin: 35px auto 0;
+  background: var(--primary-color);
+}
+
