@@ -71,10 +71,12 @@ body {
   margin: 15px 0;
 }
 .container .answers-div .answer {
+  min-width: 80px;
   cursor: pointer;
   padding: 10px 15px;
   width: fit-content;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  transition: 0.3s;
 }
 .container .answers-div .answer.checked {
   background: green;

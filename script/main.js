@@ -1,6 +1,9 @@
 const nextQuestionBtn = document.querySelector("#submit");
 const answersDiv = document.querySelector(".answers-div");
 let curruntQuestion = 0;
+let numberOfQuestions = 10;
+let rightAnswers = 0;
+let resultObject = [];
 
 const addListner = (selector, eventName, callback) => {
   document.querySelector(selector).addEventListener(eventName, callback);
@@ -19,9 +22,11 @@ const fetchData = (url, callback) => {
 
 const handleDom = (question, answers) => {
   document.querySelector("#questionsCategory").textContent = question.category;
-  document.querySelector("#questionsCount").textContent = curruntQuestion + 1;
+  document.querySelector("#questionsCount").textContent = `${
+    curruntQuestion + 1
+  }/${numberOfQuestions}`;
   document.querySelector(".question").textContent = question.question;
-  answers.forEach((answer) => {
+  answers.forEach((answer, i) => {
     if (answer) {
       let p = document.createElement("p");
       p.classList.add("answer");
@@ -58,16 +63,45 @@ addListner("#random", "click", () => {
     answers = shuffleArray(answers);
     handleDom(response[curruntQuestion], answers);
     nextQuestionBtn.addEventListener("click", () => {
-      answersDiv.innerHTML = "";
-      curruntQuestion++;
-      let answers = response[curruntQuestion].incorrectAnswers.concat(
+      testAnswer(
+        response[curruntQuestion].question,
         response[curruntQuestion].correctAnswer
       );
-      answers = shuffleArray(answers);
-      handleDom(response[curruntQuestion], answers);
+      answersDiv.textContent = "";
+      if (curruntQuestion < numberOfQuestions - 1) {
+        curruntQuestion++;
+        let answers = response[curruntQuestion].incorrectAnswers.concat(
+          response[curruntQuestion].correctAnswer
+        );
+        answers = shuffleArray(answers);
+        handleDom(response[curruntQuestion], answers);
+      } else {
+        showResults(resultObject);
+      }
     });
   });
 });
+
+function testAnswer(question, rightAnswer) {
+  Array.from(answersDiv.children).forEach((answer) => {
+    if (answer.classList.contains("checked")) {
+      if (rightAnswer === answer.textContent) {
+        resultObject.push({
+          question,
+          correct: answer.textContent,
+          isTrue: true,
+        });
+        rightAnswers++;
+      } else {
+        resultObject.push({
+          question,
+          correct: answer.textContent,
+          isTrue: false,
+        });
+      }
+    }
+  });
+}
 
 // Fetch Programming Quiz Data
 addListner("#programming", "click", () => {
@@ -79,11 +113,23 @@ addListner("#programming", "click", () => {
     answers = shuffleArray(answers);
     handleDom(response[curruntQuestion], answers);
     nextQuestionBtn.addEventListener("click", () => {
-      answersDiv.innerHTML = "";
-      curruntQuestion++;
-      let answers = Object.values(response[curruntQuestion].answers);
-      answers = shuffleArray(answers);
-      handleDom(response[curruntQuestion], answers);
+      let anwersResult = Object.values(
+        response[curruntQuestion].correct_answers
+      );
+      let rightAnswer = Object.values(response[curruntQuestion].answers)[
+        anwersResult.indexOf("true")
+      ];
+      testAnswer(response[curruntQuestion].question, rightAnswer);
+      answersDiv.textContent = "";
+      if (curruntQuestion < numberOfQuestions - 1) {
+        curruntQuestion++;
+        let answers = Object.values(response[curruntQuestion].answers);
+        answers = shuffleArray(answers);
+        handleDom(response[curruntQuestion], answers);
+      } else {
+        console.log(resultObject);
+        showResults(resultObject);
+      }
     });
   });
 });
