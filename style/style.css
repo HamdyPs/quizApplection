@@ -88,4 +88,57 @@ body {
 .container #submit {
   margin: 35px auto 0;
 }
+.final-result{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 50%;
+  margin: 50px auto;
+  padding: 10px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+  visibility: hidden;
+}
+
+.rate{
+  color: #fff;
+  height: 90px;
+  width:90px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.failed{
+  background-color: red;
+}
+.success{
+  background-color: green;
+}
+
+
+.fin-result{
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.show{
+  width: 80%;
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px; 
+}
+.card{
+  display: flex;
+  justify-content: space-around;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+}
+
+.q-show{
+  border-right: 1px solid #ccc;
+  margin-right: 10px;
+}
 

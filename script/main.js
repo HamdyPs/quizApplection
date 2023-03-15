@@ -44,6 +44,31 @@ const answerCheck = (event) => {
   clickedAnswer.classList.add("checked");
 };
 
+const showResults= (array)=>{
+  console.log(array);
+
+  array.forEach(e=>{
+    const card = document.createElement('div');
+    card.classList.add('card')
+    const resultTest = document.createElement('h2');
+    resultTest.classList.add('result-test');
+    resultTest.textContent = ``
+    const qShow = document.createElement('p');
+    qShow.classList.add('q-show');
+    qShow.textContent = e.question
+    const aShow = document.createElement('p');
+    aShow.classList.add('a-show')
+    aShow.textContent = e.correct
+    const resultShow = document.createElement('p');
+    resultShow.classList.add('result-show');
+    resultShow.textContent = e.isTrue;
+    card.appendChild(qShow);
+    card.appendChild(aShow);
+    card.appendChild(resultShow);
+    document.querySelector('.show').appendChild(card)
+  })
+}
+
 const shuffleArray = (arr) => {
   for (let i = arr.length - 1; i >= 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
@@ -51,6 +76,20 @@ const shuffleArray = (arr) => {
   }
   return arr;
 };
+
+const showFinalResult = ()=>{
+  document.querySelector('.final-result').style.visibility = 'visible'
+  if(rightAnswers < 5){
+    document.querySelector('.rate').textContent = 'failed'
+    document.querySelector('.rate').classList.add('failed');
+
+  }else{
+    document.querySelector('.rate').textContent = 'successfull';
+    document.querySelector('.rate').classList.add('success');
+  }
+
+  document.querySelector('.fin-result').textContent = `${rightAnswers} / ${numberOfQuestions}`;
+}
 
 // Fetch Random Quiz Data
 addListner("#random", "click", () => {
@@ -76,6 +115,7 @@ addListner("#random", "click", () => {
         answers = shuffleArray(answers);
         handleDom(response[curruntQuestion], answers);
       } else {
+        showFinalResult()
         showResults(resultObject);
       }
     });
