@@ -39,6 +39,14 @@ const answerCheck = (event) => {
   clickedAnswer.classList.add("checked");
 };
 
+const shuffleArray = (arr) => {
+  for (let i = arr.length - 1; i >= 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+};
+
 // Fetch Random Quiz Data
 addListner("#random", "click", () => {
   const url = "https://the-trivia-api.com/api/questions";
@@ -47,6 +55,7 @@ addListner("#random", "click", () => {
     let answers = response[curruntQuestion].incorrectAnswers.concat(
       response[curruntQuestion].correctAnswer
     );
+    answers = shuffleArray(answers);
     handleDom(response[curruntQuestion], answers);
     nextQuestionBtn.addEventListener("click", () => {
       answersDiv.innerHTML = "";
@@ -54,6 +63,7 @@ addListner("#random", "click", () => {
       let answers = response[curruntQuestion].incorrectAnswers.concat(
         response[curruntQuestion].correctAnswer
       );
+      answers = shuffleArray(answers);
       handleDom(response[curruntQuestion], answers);
     });
   });
@@ -66,11 +76,13 @@ addListner("#programming", "click", () => {
 
   fetchData(url, (response) => {
     let answers = Object.values(response[curruntQuestion].answers);
+    answers = shuffleArray(answers);
     handleDom(response[curruntQuestion], answers);
     nextQuestionBtn.addEventListener("click", () => {
       answersDiv.innerHTML = "";
       curruntQuestion++;
       let answers = Object.values(response[curruntQuestion].answers);
+      answers = shuffleArray(answers);
       handleDom(response[curruntQuestion], answers);
     });
   });
