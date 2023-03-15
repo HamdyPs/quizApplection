@@ -1,5 +1,6 @@
 const nextQuestionBtn = document.querySelector("#submit");
 const answersDiv = document.querySelector(".answers-div");
+const container = document.querySelector(".container");
 let curruntQuestion = 0;
 let numberOfQuestions = 10;
 let rightAnswers = 0;
@@ -44,30 +45,28 @@ const answerCheck = (event) => {
   clickedAnswer.classList.add("checked");
 };
 
-const showResults= (array)=>{
-  console.log(array);
-
-  array.forEach(e=>{
-    const card = document.createElement('div');
-    card.classList.add('card')
-    const resultTest = document.createElement('h2');
-    resultTest.classList.add('result-test');
-    resultTest.textContent = ``
-    const qShow = document.createElement('p');
-    qShow.classList.add('q-show');
-    qShow.textContent = e.question
-    const aShow = document.createElement('p');
-    aShow.classList.add('a-show')
-    aShow.textContent = e.correct
-    const resultShow = document.createElement('p');
-    resultShow.classList.add('result-show');
+const showResults = (array) => {
+  array.forEach((e) => {
+    const card = document.createElement("div");
+    card.classList.add("card");
+    const resultTest = document.createElement("h2");
+    resultTest.classList.add("result-test");
+    resultTest.textContent = ``;
+    const qShow = document.createElement("p");
+    qShow.classList.add("q-show");
+    qShow.textContent = e.question;
+    const aShow = document.createElement("p");
+    aShow.classList.add("a-show");
+    aShow.textContent = e.correct;
+    const resultShow = document.createElement("p");
+    resultShow.classList.add("result-show");
     resultShow.textContent = e.isTrue;
     card.appendChild(qShow);
     card.appendChild(aShow);
     card.appendChild(resultShow);
-    document.querySelector('.show').appendChild(card)
-  })
-}
+    document.querySelector(".show").appendChild(card);
+  });
+};
 
 const shuffleArray = (arr) => {
   for (let i = arr.length - 1; i >= 0; i--) {
@@ -77,24 +76,30 @@ const shuffleArray = (arr) => {
   return arr;
 };
 
-const showFinalResult = ()=>{
-  document.querySelector('.final-result').style.visibility = 'visible'
-  if(rightAnswers < 5){
-    document.querySelector('.rate').textContent = 'failed'
-    document.querySelector('.rate').classList.add('failed');
-
-  }else{
-    document.querySelector('.rate').textContent = 'successfull';
-    document.querySelector('.rate').classList.add('success');
+const showFinalResult = () => {
+  document.querySelector(".final-result").style.display = "flex";
+  if (rightAnswers < 5) {
+    let i = document.createElement("i");
+    i.classList.add("fa-solid", "fa-xmark");
+    document.querySelector(".rate").appendChild(i);
+    document.querySelector(".rate").classList.add("failed");
+  } else {
+    let i = document.createElement("i");
+    i.classList.add("fa-solid", "fa-check");
+    document.querySelector(".rate").appendChild(i);
+    document.querySelector(".rate").classList.add("success");
   }
 
-  document.querySelector('.fin-result').textContent = `${rightAnswers} / ${numberOfQuestions}`;
-}
+  document.querySelector(
+    ".fin-result"
+  ).textContent = `${rightAnswers} / ${numberOfQuestions}`;
+};
 
 // Fetch Random Quiz Data
 addListner("#random", "click", () => {
   const url = "https://the-trivia-api.com/api/questions";
-
+  document.querySelector(".select-div").remove();
+  document.querySelector(".container").style.display = "block";
   fetchData(url, (response) => {
     let answers = response[curruntQuestion].incorrectAnswers.concat(
       response[curruntQuestion].correctAnswer
@@ -115,7 +120,8 @@ addListner("#random", "click", () => {
         answers = shuffleArray(answers);
         handleDom(response[curruntQuestion], answers);
       } else {
-        showFinalResult()
+        container.remove();
+        showFinalResult();
         showResults(resultObject);
       }
     });
@@ -147,7 +153,8 @@ function testAnswer(question, rightAnswer) {
 addListner("#programming", "click", () => {
   const url =
     "https://quizapi.io/api/v1/questions?apiKey=Z3xA2aqi6qhZlGfuJtyKQqAtIOH0JHfvOatj07zQ";
-
+  document.querySelector(".select-div").remove();
+  document.querySelector(".container").style.display = "block";
   fetchData(url, (response) => {
     let answers = Object.values(response[curruntQuestion].answers);
     answers = shuffleArray(answers);
@@ -167,7 +174,8 @@ addListner("#programming", "click", () => {
         answers = shuffleArray(answers);
         handleDom(response[curruntQuestion], answers);
       } else {
-        console.log(resultObject);
+        container.remove();
+        showFinalResult();
         showResults(resultObject);
       }
     });
