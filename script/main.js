@@ -21,7 +21,7 @@ const fetchData = (url, callback) => {
   xhr.send();
 };
 
-const handleDom = (question, answers) => {
+const handleDom = (question, answers,r) => {
   document.querySelector("#questionsCategory").textContent = question.category;
   document.querySelector("#questionsCount").textContent = `${
     curruntQuestion + 1
@@ -33,6 +33,9 @@ const handleDom = (question, answers) => {
       p.classList.add("answer");
       p.textContent = answer;
       p.addEventListener("click", answerCheck);
+      if(r === answer){
+        p.style.color = '#00FF00'
+      }
       answersDiv.appendChild(p);
     }
   });
@@ -95,17 +98,22 @@ const showFinalResult = () => {
   ).textContent = `${rightAnswers} / ${numberOfQuestions}`;
 };
 
+const randomQuiz = (incorrectAnswers,correctAnswers)=>{
+  let answers = incorrectAnswers.concat(
+    correctAnswers
+  );
+  answers = shuffleArray(answers);
+  return answers
+}
+
 // Fetch Random Quiz Data
 addListner("#random", "click", () => {
   const url = "https://the-trivia-api.com/api/questions";
   document.querySelector(".select-div").remove();
   document.querySelector(".container").style.display = "block";
   fetchData(url, (response) => {
-    let answers = response[curruntQuestion].incorrectAnswers.concat(
-      response[curruntQuestion].correctAnswer
-    );
-    answers = shuffleArray(answers);
-    handleDom(response[curruntQuestion], answers);
+   let answers =  randomQuiz(response[curruntQuestion].incorrectAnswers,response[curruntQuestion].correctAnswer)
+    handleDom(response[curruntQuestion],answers,response[curruntQuestion].correctAnswer);
     nextQuestionBtn.addEventListener("click", () => {
       testAnswer(
         response[curruntQuestion].question,
@@ -114,11 +122,9 @@ addListner("#random", "click", () => {
       answersDiv.textContent = "";
       if (curruntQuestion < numberOfQuestions - 1) {
         curruntQuestion++;
-        let answers = response[curruntQuestion].incorrectAnswers.concat(
-          response[curruntQuestion].correctAnswer
-        );
-        answers = shuffleArray(answers);
-        handleDom(response[curruntQuestion], answers);
+      let answers=   randomQuiz(response[curruntQuestion].incorrectAnswers,response[curruntQuestion].correctAnswer)
+
+        handleDom(response[curruntQuestion],answers,response[curruntQuestion].correctAnswer);
       } else {
         container.remove();
         showFinalResult();
@@ -149,6 +155,12 @@ function testAnswer(question, rightAnswer) {
   });
 }
 
+const programmingQuiz = (questionAnswer)=>{
+  let answers = Object.values(questionAnswer);
+  answers = shuffleArray(answers);
+  return answers
+}
+
 // Fetch Programming Quiz Data
 addListner("#programming", "click", () => {
   const url =
@@ -156,9 +168,9 @@ addListner("#programming", "click", () => {
   document.querySelector(".select-div").remove();
   document.querySelector(".container").style.display = "block";
   fetchData(url, (response) => {
-    let answers = Object.values(response[curruntQuestion].answers);
-    answers = shuffleArray(answers);
-    handleDom(response[curruntQuestion], answers);
+    programmingQuiz(response[curruntQuestion].answers)
+    handleDom(response[curruntQuestion],     programmingQuiz(response[curruntQuestion].answers)
+    );
     nextQuestionBtn.addEventListener("click", () => {
       let anwersResult = Object.values(
         response[curruntQuestion].correct_answers
@@ -172,7 +184,8 @@ addListner("#programming", "click", () => {
         curruntQuestion++;
         let answers = Object.values(response[curruntQuestion].answers);
         answers = shuffleArray(answers);
-        handleDom(response[curruntQuestion], answers);
+        handleDom(response[curruntQuestion],     programmingQuiz(response[curruntQuestion].answers)
+        );
       } else {
         container.remove();
         showFinalResult();
